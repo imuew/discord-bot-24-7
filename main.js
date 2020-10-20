@@ -81,13 +81,13 @@ client.on('message', message => {
 
                 server.queue.shift();
 
-                server.dispatcher.on("end", function () {
+                server.dispatcher.on("finish", function () {
                     if (server.queue[0]) {
                         play(connection, message);
                     } else {
                         connection.disconnect();
                     }
-                })
+                });
 
             }
 
