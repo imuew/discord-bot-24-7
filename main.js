@@ -78,12 +78,13 @@ client.on('message', message => {
 
             function play(connection, message) {
                 var server = servers[message.guild.id];
+                if(!server.queue[1])
 
+
+                
                 server.dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
-
-                server.queue.shift();
-
                 server.dispatcher.on("finish", function () {
+                    server.queue.shift();
                     if (server.queue[0]) {
                         play(connection, message);
                     } else {
@@ -109,20 +110,7 @@ client.on('message', message => {
 
             var server = servers[message.guild.id];
 
-            if(!server.queue[1]){
-
-                server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audio"}))}
-                server.dispatcher.on("finish",function(){
-                        server.queue.shift()
-                        if(server.queue[0]){
-                                play(connection,message)
-                        }
-                        else
-                        {
-                       server.queue.push(args[1]);
-                        }
-                });
-                
+            server.queue.push(args[1]);
 
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function (connection) {
                 play(connection, message);
