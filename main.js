@@ -76,9 +76,9 @@ client.on('message', message => {
     switch (args[0]) {
         case 'sno':
 
-            function play(connection, message)
+            function play(connection, message) {
             var server = servers[message.guild.id];
-            if (!server.queue[1]) {
+            if (!server.queue[1]) 
 
 
                 server.dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
