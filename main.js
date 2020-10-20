@@ -6,6 +6,12 @@ const prefix = '-';
 
 const fs = require('fs');
 
+const ytdl = require("ytdl-core");
+
+var version = '1.2';
+
+var servers  = {};
+
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -61,6 +67,56 @@ client.on('message', message => {
             break;
     }
 
+})
+
+Client.on('message',message => {
+
+    let args = message.content.substring(prefix.length).split(" ")
+
+    switch (args[0]) {
+        case 'sno':
+
+        function play(connection, message){
+            var server = servers[message.guild.id];
+
+            server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audioonly"}));
+
+            server.queue.shift();
+
+            server.dispatcher.on("end",function(){
+                if(server.queue[0]){
+                    play(connection, message);
+                }else {
+                    connection.disconnect();
+                }
+            });
+
+        }
+
+            if(!args[1]){
+                message.channel.send("there was no link");
+                return;
+            }
+
+            if(!message.member.voiceChannel){
+                message.channel.send("imagine not being in a channel");
+                return;
+            }
+
+            if(!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+
+            var server = servers[message.guild.id];
+
+            server.queue.push(args[1]);
+
+            if(!message.guild.voiceConnection) message.member.Voice.Channel.join().then(function(connection){
+                play(connection, message);
+            })
+
+        break;
+    }
 })
 
 client.login(process.env.token);
