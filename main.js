@@ -109,7 +109,7 @@ client.on('message', message => {
 
             server.queue.push(args[1]);
 
-            if (!message.member.voice.connection) message.member.Voice.channel.join().then(function (connection) {
+            if (!message.member.voice.connection) message.member.voice.channel.join().then(function (connection) {
                 play(connection, message);
             })
 
