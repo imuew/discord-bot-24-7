@@ -2,17 +2,15 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
-const prefix = '-';
-
 const fs = require('fs');
+
+client.commands = new Discord.Collection();
 
 const ytdl = require("ytdl-core");
 
-var version = '1.2';
+const prefix = '-';
 
 var servers = {};
-
-client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -71,7 +69,7 @@ client.on('message', message => {
 
 client.on('message', message => {
 
-    let args = message.content.substring(prefix.length).split(";")
+    let args = message.content.substring(prefix.length).split(" ")
 
     switch (args[0]) {
         case 'sno':
