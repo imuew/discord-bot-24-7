@@ -10,7 +10,7 @@ const ytdl = require("ytdl-core");
 
 var version = '1.2';
 
-var servers  = {};
+var servers = {};
 
 client.commands = new Discord.Collection();
 
@@ -69,41 +69,41 @@ client.on('message', message => {
 
 })
 
-client.on('message',message => {
+client.on('message', message => {
 
     let args = message.content.substring(prefix.length).split(" ")
 
     switch (args[0]) {
         case 'sno':
 
-        function play(connection, message){
-            var server = servers[message.guild.id];
+            function play(connection, message) {
+                var server = servers[message.guild.id];
 
-            server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audioonly"}));
+                server.dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
 
-            server.queue.shift();
+                server.queue.shift();
 
-            server.dispatcher.on("end",function(){
-                if(server.queue[0]){
-                    play(connection, message);
-                }else {
-                    connection.disconnect();
-                }
-            });
+                server.dispatcher.on("end", function () {
+                    if (server.queue[0]) {
+                        play(connection, message);
+                    } else {
+                        connection.disconnect();
+                    }
+                })
 
-        }
+            }
 
-            if(!args[1]){
+            if (!args[1]) {
                 message.channel.send("there was no link");
                 return;
             }
 
-            if(!message.member.voice.channel){
+            if (!message.member.voice.channel) {
                 message.channel.send("imagine not being in a channel");
                 return;
             }
 
-            if(!servers[message.guild.id]) servers[message.guild.id] = {
+            if (!servers[message.guild.id]) servers[message.guild.id] = {
                 queue: []
             }
 
@@ -111,11 +111,11 @@ client.on('message',message => {
 
             server.queue.push(args[1]);
 
-            if(!message.member.voice.connection) message.member.Voice.Channel.join().then(function(connection){
+            if (!message.member.voice.connection) message.member.Voice.Channel.join().then(function (connection) {
                 play(connection, message);
             })
 
-        break;
+            break;
     }
 });
 
