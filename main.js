@@ -76,19 +76,18 @@ client.on('message', message => {
     switch (args[0]) {
         case 'sno':
 
-            function play(connection, message) {
-                var server = servers[message.guild.id];
-                if(!server.queue[1])
+            function play(connection, message)
+            var server = servers[message.guild.id];
+            if (!server.queue[1]) {
 
 
-                
                 server.dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
                 server.dispatcher.on("finish", function () {
                     server.queue.shift();
                     if (server.queue[0]) {
                         play(connection, message);
                     } else {
-                        connection.disconnect();
+                        server.queue.push(args[1]);
                     }
                 });
 
@@ -118,22 +117,22 @@ client.on('message', message => {
 
             break;
 
-            case 'sno skip':
-                var server = servers[message.guild.id];
-                if(server.dispatcher) server.dispatcher.end();
-                message.channel.send("skipping");
+        case 'sno skip':
+            var server = servers[message.guild.id];
+            if (server.dispatcher) server.dispatcher.end();
+            message.channel.send("skipping");
             break;
 
-            case 'sno stop':
-                var server = servers[message.guild.id];
-                if(message.guild.voiceConnection){
-                    for(var i = server. queue.length -1; i >=0; i--){
-                        server.dispatcher.end();
-                        console.log('stopped the queue')
-                    }
-
-                    if(message.guild.connection) message.guild.voiceConnection.disconnect();
+        case 'sno stop':
+            var server = servers[message.guild.id];
+            if (message.guild.voiceConnection) {
+                for (var i = server.queue.length - 1; i >= 0; i--) {
+                    server.dispatcher.end();
+                    console.log('stopped the queue')
                 }
+
+                if (message.guild.connection) message.guild.voiceConnection.disconnect();
+            }
     }
 });
 
