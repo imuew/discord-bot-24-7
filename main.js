@@ -10,6 +10,8 @@ const ytdl = require("ytdl-core");
 
 const prefix = '-';
 
+var version = '1.2';
+
 var servers = {};
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -107,7 +109,20 @@ client.on('message', message => {
 
             var server = servers[message.guild.id];
 
-            server.queue.push(args[1]);
+            if(!server.queue[1]){
+
+                server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audio"}))}
+                server.dispatcher.on("finish",function(){
+                        server.queue.shift()
+                        if(server.queue[0]){
+                                play(connection,message)
+                        }
+                        else
+                        {
+                       server.queue.push(args[1]);
+                        }
+                });
+                
 
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function (connection) {
                 play(connection, message);
@@ -115,13 +130,13 @@ client.on('message', message => {
 
             break;
 
-            case 'skip':
+            case 'sno skip':
                 var server = servers[message.guild.id];
                 if(server.dispatcher) server.dispatcher.end();
                 message.channel.send("skipping");
             break;
 
-            case 'stop':
+            case 'sno stop':
                 var server = servers[message.guild.id];
                 if(message.guild.voiceConnection){
                     for(var i = server. queue.length -1; i >=0; i--){
