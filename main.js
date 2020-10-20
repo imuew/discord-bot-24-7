@@ -70,7 +70,8 @@ client.on('message', message => {
 
 client.on('message', message => {
 
-    let args = message.content.substring(prefix.length).split(" ")
+    const args = message.content.substring(prefix.length).split(" ")
+    const serverQueue = queue.get(message.guild.id)
 
     switch (args[0]) {
         case 'sno':
@@ -105,6 +106,19 @@ client.on('message', message => {
             if (!servers[message.guild.id]) servers[message.guild.id] = {
                 queue: []
             }
+            if (!serverQueue){
+                const queueConstruct = {
+                    textChannel: message.channel,
+                    voiceChannel: voiceChannel,
+                    connection: null,
+                    songs: [],
+                    volume: 5,
+                    playing: true
+                }
+                queue.set(message.guild.id, queueConstruct)
+
+                queueConstruct.songs.push(song)
+            }
 
             var server = servers[message.guild.id];
 
@@ -134,5 +148,7 @@ client.on('message', message => {
             }
     }
 });
+
+
 
 client.login(process.env.token);
