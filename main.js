@@ -35,7 +35,7 @@ client.on('message', message => {
         client.commands.get('ping').execute(message, args);
     } else if (command == 'youtube') {
         client.commands.get('youtube').execute(message, args);
-    }
+    }   
 
 });
 
@@ -90,7 +90,7 @@ client.on('message', message => {
                     }
                 });
 
-            };
+            }
 
             if (!args[1]) {
                 message.channel.send("there was no link");
@@ -108,7 +108,7 @@ client.on('message', message => {
 
             var server = servers[message.guild.id];
 
-            server.queue.push(!args[1]);
+            server.queue.push(args[1]);
 
             if (!message.member.voice.connection) message.member.voice.channel.join().then(function (connection) {
                 play(connection, message);
@@ -116,22 +116,22 @@ client.on('message', message => {
 
             break;
 
-        case 'sno skip':
-            var server = servers[message.guild.id];
-            if (server.dispatcher) server.dispatcher.end();
-            message.channel.send("skipping");
+            case 'sno skip':
+                var server = servers[message.guild.id];
+                if(server.dispatcher) server.dispatcher.end();
+                message.channel.send("skipping");
             break;
 
-        case 'sno stop':
-            var server = servers[message.guild.id];
-            if (message.guild.voiceConnection) {
-                for (var i = server.queue.length - 1; i >= 0; i--) {
-                    server.dispatcher.end();
-                    console.log('stopped the queue')
-                }
+            case 'sno stop':
+                var server = servers[message.guild.id];
+                if(message.guild.voiceConnection){
+                    for(var i = server. queue.length -1; i >=0; i--){
+                        server.dispatcher.end();
+                        console.log('stopped the queue')
+                    }
 
-                if (message.guild.connection) message.guild.voiceConnection.disconnect();
-            }
+                    if(message.guild.connection) message.guild.voiceConnection.disconnect();
+                }
     }
 });
 
