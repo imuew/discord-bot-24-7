@@ -35,7 +35,6 @@ client.on('message', message => {
         client.commands.get('ping').execute(message, args);
     } else if (command == 'youtube') {
         client.commands.get('youtube').execute(message, args);
-
     }
 
 });
@@ -91,7 +90,7 @@ client.on('message', message => {
                     }
                 });
 
-            }
+            };
 
             if (!args[1]) {
                 message.channel.send("there was no link");
@@ -117,22 +116,22 @@ client.on('message', message => {
 
             break;
 
-            case 'sno skip':
-                var server = servers[message.guild.id];
-                if(server.dispatcher) server.dispatcher.end();
-                message.channel.send("skipping");
+        case 'sno skip':
+            var server = servers[message.guild.id];
+            if (server.dispatcher) server.dispatcher.end();
+            message.channel.send("skipping");
             break;
 
-            case 'sno stop':
-                var server = servers[message.guild.id];
-                if(message.guild.voiceConnection){
-                    for(var i = server. queue.length -1; i >=0; i--){
-                        server.dispatcher.end();
-                        console.log('stopped the queue')
-                    }
-
-                    if(message.guild.connection) message.guild.voiceConnection.disconnect();
+        case 'sno stop':
+            var server = servers[message.guild.id];
+            if (message.guild.voiceConnection) {
+                for (var i = server.queue.length - 1; i >= 0; i--) {
+                    server.dispatcher.end();
+                    console.log('stopped the queue')
                 }
+
+                if (message.guild.connection) message.guild.voiceConnection.disconnect();
+            }
     }
 });
 
