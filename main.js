@@ -69,7 +69,7 @@ client.on('message', message => {
 
 })
 
-Client.on('message',message => {
+client.on('message',message => {
 
     let args = message.content.substring(prefix.length).split(" ")
 
@@ -98,7 +98,7 @@ Client.on('message',message => {
                 return;
             }
 
-            if(!message.member.voiceChannel){
+            if(!message.member.voice.channel){
                 message.channel.send("imagine not being in a channel");
                 return;
             }
@@ -117,6 +117,6 @@ Client.on('message',message => {
 
         break;
     }
-})
+});
 
 client.login(process.env.token);
