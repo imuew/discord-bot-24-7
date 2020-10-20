@@ -114,6 +114,23 @@ client.on('message', message => {
             })
 
             break;
+
+            case 'skip':
+                var server = servers[message.guild.id];
+                if(server.dispatcher) server.dispatcher.end();
+                message.channel.send("skipping");
+            break;
+
+            case 'stop':
+                var server = servers[message.guild.id];
+                if(message.guild.voiceConnection){
+                    for(var i = server. queue.length -1; i >=0; i--){
+                        server.dispatcher.end();
+                        console.log('stopped the queue')
+                    }
+
+                    if(message.guild.connection) message.guild.voiceConnection.disconnect();
+                }
     }
 });
 
